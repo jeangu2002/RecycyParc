@@ -1,0 +1,37 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}AppBundle:User:index{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Bonjour {{app.user.prenom}}</h1>
+        <ul id="user-menu">
+            <li><a href={{path("depot_create")}}>Encoder un dépot</a></li>
+            <li><a href={{path("conteneur_create")}}>Ajouter un conteneur</a></li>
+            <li><a href={{path("dechet_create")}}>Ajouter un type de déchets</a></li>
+        </ul>
+    </div>
+    <div class="container">
+         {% if is_granted('ROLE_GERANT') %}
+
+            {% include 'AppBundle:Conteneur:occupation.html.twig' %}
+
+        {% endif %}
+        
+        {% if is_granted('ROLE_GERANT') %}
+            {% include 'AppBundle:Conteneur:notification.html.twig' %}
+        {% endif %}
+
+      
+
+        {% if is_granted('ROLE_GERANT_INTERCOMMUNALE') %}      
+            {% include 'AppBundle:Parc:notification_parcs.html.twig' %}
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block  javascripts %}
+    {{ parent() }}
+   
+
+{% endblock %}

@@ -1,0 +1,116 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}AppBundle:Menage:create{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Welcome to the Menage:create page</h1>
+        <div class="row">
+            {{ form_start(form, {'attr': {'class': 'my-form-class'} }) }}
+            {{ form_row(form._token) }}
+            <div class="col-md-6">
+                 <div class="form-group">
+                    {{ form_label(form.nom)}}
+                    {{ form_widget(form.nom, {'attr': {'class': 'form-control'}})}}
+                    {{ form_errors(form.nom) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.prenom)}}
+                    {{ form_widget(form.prenom, {'attr': {'class': 'form-control'}})}}
+                    {{ form_errors(form.prenom) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.email)}}
+                    {{ form_widget(form.email, {'attr': {'class': 'form-control'}})}}
+                    {{ form_errors(form.email) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.rue)}}
+                    {{ form_widget(form.rue, {'attr': {'class': 'form-control'}})}}
+                    {{ form_errors(form.rue) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.numero)}}
+                    {{ form_widget(form.numero, {'attr': {'class': 'form-control'}})}}
+                    {{ form_errors(form.numero) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.boite)}}
+                    {{ form_widget(form.boite, {'attr': {'class': 'form-control'}})}}
+                    {{ form_errors(form.boite) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.commune)}}
+                    {{ form_widget(form.commune, {'attr': {'class': 'form-control'}})}}
+                    {{ form_errors(form.commune) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.localite)}}
+                    {{ form_widget(form.localite, {'attr': {'class': 'form-control'}})}}
+                    {{ form_errors(form.localite) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.enfants)}}
+                    {{ form_widget(form.enfants, {'attr': {'class': 'form-control'}})}}
+                    {{ form_errors(form.enfants) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.adultes)}}
+                    {{ form_widget(form.adultes, {'attr': {'class': 'form-control'}})}}
+                    {{ form_errors(form.adultes) }}
+                </div>
+                <input type="submit" value="Enregistrer" class="btn btn-success pull-right" />
+            </div>
+            {{ form_end(form,{'render_rest': false}) }}
+        </div>
+       
+    </div>
+    <div id="communes">
+        
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $( document ).ready(function() {
+           
+           
+            $.ajax({url: "http://geoservices.wallonie.be/geolocalisation/rest/getListeCommunes/", success: function(result){
+             $("#menage_commune").empty();
+             $("#menage_localite").empty();
+            for(var i =0; i<result.communes.length; i++)
+            {
+                if(result.communes[i].nom == 'FLÉRON' || result.communes[i].nom == 'HERVE' || result.communes[i].nom == 'PEPINSTER' || result.communes[i].nom == 'LIÈGE')
+                    $("#menage_commune").append('<option value="'+ result.communes[i].nom + '">' + result.communes[i].nom + '</option>');
+            }
+             pupolateLocalite();      
+          }});
+      
+      
+      $("#menage_commune").change(function() {
+           pupolateLocalite(); 
+       });
+       
+       
+       function pupolateLocalite()
+       {
+            var url = "http://geoservices.wallonie.be/geolocalisation/rest/searchCommunes/"+$("#menage_commune").val();
+            $.ajax({url:url , success: function(result){
+             $("#menage_localite").empty();
+            for(var i =0; i<result.communes.length; i++)
+            {
+                for(var j =0; j<result.communes[i].cps.length; j++)
+                {
+                    $("#menage_localite").append('<option value="'+ result.communes[i].cps[j] + '">' + result.communes[i].cps[j] + '</option>');
+                }
+            }
+                      
+          }});
+       }
+     });
+     
+    </script>
+    
+{% endblock %}

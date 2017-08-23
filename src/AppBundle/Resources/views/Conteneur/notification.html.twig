@@ -1,0 +1,32 @@
+{# empty Twig template #}
+<table class="table">
+    <tr>
+        <th>notifications<th></th>
+        <th>clôturer</th>
+    </tr>
+    {% if conteneursLimite %}
+
+        {% for conteneur in conteneursLimite %}
+            <tr>
+                <td>le conteneur {{conteneur.emplacement}}({{conteneur.dechets.nom}}) est rempli à {{((conteneur.niveau/conteneur.contenance)*100)|round}}%</td>
+                <td><a href="{{path('cloture_conteneur',{id:conteneur.id})}}">clôturer</a></td>
+            </tr>
+        {% endfor %}
+
+    {% else %}
+
+        <div class="alert alert-warning">
+
+            <p> Aucune notification </p>
+        </div>
+    {% endif %}
+
+
+</table>
+
+<a></a>
+<ul>
+    <li><a href ={{path('parc_stats_show')}} >Statistiques</a></li>
+</ul>
+<button id="modalButton" type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">Occupations des conteneurs</button>
+

@@ -1,0 +1,29 @@
+
+{% if parcs %}
+    <table class="table">
+        <tr>
+            <th>Parc</th>
+            <th>Conteneur</th>
+            <th>Type de déchet</th>
+            <th>taux de remplissage</th> 
+            <th></th>
+
+        </tr>
+        {% for parc in parcs %}
+
+            {% for conteneur in parc.conteneurs %}
+                <tr>
+                    <td>{{parc.rue}} {{parc.numero}} - {{parc.codePostal}} {{parc.localite}}</td>
+                    <td>{{conteneur.emplacement}}</td>
+                    <td>{{conteneur.dechets.nom}}</td>
+                    <td>{{((conteneur.niveau/conteneur.contenance)*100)|round}}%</td> <td><a href="{{path('cloture_conteneur',{'id':conteneur.id})}}">vider</a></td>
+                </tr>
+            {% endfor %}
+        {% endfor %}
+
+    </table>
+    <ul>
+        <li><a href ={{path('parc_stats_show')}} >Statistiques</a></li>
+        <li><a href={{path('generate_factures')}}>Générer les factures</a></li>
+    </ul>
+{% endif %}{# empty Twig template #}

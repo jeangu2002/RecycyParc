@@ -1,0 +1,133 @@
+
+parc_create:
+    path:     /parc/create
+    defaults: { _controller: AppBundle:Parc:create }
+
+parc_delete:
+    path:     /parc/delete
+    defaults: { _controller: AppBundle:Parc:delete }
+
+parc_edit:
+    path:     /parc/edit/{id}
+    defaults: { _controller: AppBundle:Parc:edit }
+    requirements:
+        id: \d+
+
+parc_show_all:
+    path:     /parc/showAll
+    defaults: { _controller: AppBundle:Parc:showAll }
+    
+parc_stats:
+    path: /parc/stats
+    defaults: { _controller: AppBundle:Parc:getStats }
+    
+parc_stats_show:
+    path: /parc/statsShow
+    defaults: { _controller: AppBundle:Parc:showStats }
+    
+depot_create:
+    path:     /depot/create
+    defaults: { _controller: AppBundle:Depot:create }
+
+depot_delete:
+    path:     /depot/delete
+    defaults: { _controller: AppBundle:Depot:delete }
+
+depot_edit:
+    path:     /depot/edit
+    defaults: { _controller: AppBundle:Depot:edit }
+
+depot_show_all:
+    path:     /depot/showAll
+    defaults: { _controller: AppBundle:Depot:showAll }
+
+menage_create:
+    path:     /menage/create
+    defaults: { _controller: AppBundle:Menage:create }
+
+menage_delete:
+    path:     /menage/delete/{id}
+    defaults: { _controller: AppBundle:Menage:delete }
+    requirements:
+        id:  \d+
+
+menage_edit:
+    path:     /menage/edit/{id}
+    defaults: { _controller: AppBundle:Menage:edit }
+    requirements:
+        id:    \d+
+menage_show_all:
+    path:     /menage/showAll
+    defaults: { _controller: AppBundle:Menage:showAll }
+    
+menage_details:
+    path: /menage/details/{id}
+    defaults: {_controller: AppBundle:Menage:getDetails}
+    requirements:
+            id: \d+
+
+conteneur_create:
+    path:     /conteneur/create
+    defaults: { _controller: AppBundle:Conteneur:create }
+
+conteneur_delete:
+    path:     /conteneur/delete
+    defaults: { _controller: AppBundle:Conteneur:delete }
+
+conteneur_edit:
+    path:     /conteneur/edit
+    defaults: { _controller: AppBundle:Conteneur:edit }
+
+conteneur_show_all:
+    path:     /conteneur/showAll
+    defaults: { _controller: AppBundle:Conteneur:showAll }
+    
+cloture_conteneur:
+    path: /conteneur/cloturer/{id}
+    defaults: { _controller: AppBundle:Conteneur:cloturer }
+    requirements:
+        id: \d+
+
+dechet_create:
+    path:     /dechet/create
+    defaults: { _controller: AppBundle:Dechet:create }
+
+dechet_edit:
+    path:     /dechet/edit
+    defaults: { _controller: AppBundle:Dechet:edit }
+
+dechet_delete:
+    path:     /dechet/delete
+    defaults: { _controller: AppBundle:Dechet:delete }
+    
+dechet_show_all:
+    path: /dechet/showAll
+    defaults: { _controller: AppBundle:Dechet:showAll }
+    
+dechet_getAll:
+    path: /dechet/getAll
+    defaults: { _controller: AppBundle:Dechet:getAll }
+    
+user_show_all:
+    path: /user/index
+    defaults: { _controller: AppBundle:User:index }
+
+generate_factures:
+    path:     /facture/generatefacture
+    defaults: { _controller: AppBundle:Facture:generate }
+    
+show_factures:
+    path: /facture/showall/{id}
+    defaults: { _controller: AppBundle:Menage:getFactures }
+    requirements:
+        id: \d+
+        
+facture_show_details:
+    path: /facture/details/{id}
+    defaults: { _controller: AppBundle:Facture:getDetails }
+    requirements:
+        id: \d+
+
+access_denied:
+    path:     /accessDenied
+    defaults: { _controller: AppBundle:Errors:accessDenied }

@@ -1,0 +1,104 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}AppBundle:Menage:details{% endblock %}
+
+{% block body %}
+    <div class="container" >
+        <table class="menage_details_table">
+            <tr>
+                <td>
+                    <strong>nom</strong>
+                </td>
+                <td>
+                    {{menage.nom}}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>prénom</strong>
+                </td>
+                <td>
+                    {{menage.prenom}}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Adresse e-mail</strong>
+                </td>
+                <td>
+                    {{menage.email}}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Adresse</strong>
+                </td>
+                <td>
+                    {{menage.rue}} {{menage.numero}}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Commune</strong>
+                </td>
+                <td>
+                    {{menage.commune}}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Localité</strong>
+                </td>
+                <td>
+                    {{menage.localite}}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Composition</strong>
+                </td>
+                <td>
+                    {{menage.enfants}} enfants - {{menage.adultes}} adultes
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Coefficient de correction</strong>
+                </td>
+                <td>
+                    {{menage.coefficientDeCorrection}}%
+                </td>
+            </tr>
+        </table>
+
+        <p><strong>Vos quotas actuels</strong></p>
+
+        <table class="menage_details_table">
+            <tr>
+            <th>
+                Type de déchets
+            </th>
+             <th>
+                Volume déposé
+            </th>
+            <th>
+                Volume autorisé
+            </th>
+            <th>
+                Reste
+            </th>
+            </tr>
+            {% for key,value in dechets %}
+            <tr>
+                <td>{{ value.nom }}</td>
+                <td>{{ value.volumeDepose }}m³</td>
+                <td>{{ value.valumeDeBase+(value.valumeDeBase*(menage.coefficientDeCorrection/100)) }}m³</td>
+                <td>{{ (value.valumeDeBase+(value.valumeDeBase*(menage.coefficientDeCorrection/100)))- value.volumeDepose }}m³</td>
+            </tr>
+        {% endfor %}
+        </table>
+        {% if menage.factures %}
+            <a href="{{path('show_factures',{'id':menage.id})}}">Voir factures</a>
+        {% endif %}
+    </div>
+{% endblock %}

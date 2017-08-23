@@ -1,0 +1,174 @@
+{# empty Twig template #}
+{% extends "::base.html.twig" %}
+
+{% block body %}
+    <div class="container">
+        <div>
+
+            <form class="form-inline" id="filter-form">
+                <div class="form-group">
+                    <select name="cars" id="type" style="display: inline;">
+                        <option value="journalier">Journalier</option>
+                        <option value="mensuel">Mensuel</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="radio" name="moyen" value="nombreVisite" style="display: inline;" checked="checked"> Nombre moyen de visite
+                    <input type="radio" name="moyen" value="moyenneVolumeDechets" style="display: inline;"> Moyenne des volumes de déchets<br>
+                </div>
+                <div class="form-group">
+                    <select id="type_dechet">
+                        <option value="0">tous les déchets </option> 
+                        {% for dechet in dechets %}
+                            <option value="{{dechet.id}}">{{dechet.nom}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" value="send">générer</button>
+            </form>
+        </div>
+        <div>
+            <table id="stats-table" class="table">
+
+
+            </table>
+
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#filter-form").submit(function (e) {
+                e.preventDefault();
+                getJsonData('{{url('parc_stats')}}');
+            });
+            $(function ()
+            {
+                $('#type_dechet').prop('disabled',true);
+                $('#type_dechet').hide();
+                $('input[type=radio][name=moyen]').change(function () {
+                    var value = $('input[name=moyen]:checked').val();
+                    if(value == 'nombreVisite')
+                    {
+                        $('#type_dechet').prop('disabled',true);
+                        $('#type_dechet').hide();
+                    }
+                    else
+                    {
+                        $('#type_dechet').prop('disabled',false);
+                        $('#type_dechet').show();
+                    }
+                });
+                getJsonData('{{url('parc_stats')}}');
+
+            });
+
+
+
+
+            function getJour(number)
+            {
+                switch (number)
+                {
+                    case '1':
+                        return "Lundi";
+                    case '2':
+                        return "Mardi";
+                    case '3':
+                        return "Mercredi";
+                    case '4':
+                        return "Jeudi";
+                    case '5':
+                        return "Vendredi";
+                    case '6':
+                        return "Samedi";
+                    default:
+                        return null;
+                }
+            }
+
+            function getMois(mois)
+            {
+                switch (mois)
+                {
+                    case '1':
+                        return "Janvier";
+                    case '2':
+                        return "Février";
+                    case '3':
+                        return "Mars";
+                    case '4':
+                        return "Avril";
+                    case '5':
+                        return "Mai";
+                    case '6':
+                        return "Juin";
+                    case '7':
+                        return "Juillet";
+                    case '8':
+                        return "Aout";
+                    case '9':
+                        return "Septembre";
+                    case '10':
+                        return "Octobre";
+                    case '11':
+                        return "Novembre";
+                    case '12':
+                        return "Décembre";
+                    default:
+                        return null;
+                }
+            }
+
+            function populateForJournalier(data)
+            {
+                $('#stats-table').append("<tr><td>" + getJour(data.jour) + "</td><td>"
+                        + data.quantite + data.mesure + "</td></tr>");
+            }
+
+            function populateForMois(data)
+            {
+                $('#stats-table').append("<tr><td>" + getMois(data.mois)
+                        + "</td><td>" + data.quantite + data.mesure + "</td></tr>");
+            }
+
+            function getJsonData(url)
+            {
+
+                var typefilter = $("#type").val();
+                //alert(type);
+                var moyenfilter = $('input[name=moyen]:checked').val();
+                //alert(moyen);
+                var typeDechetfilter = $('#type_dechet').val();
+
+                //alert(typeDechet);
+                $.getJSON(url,
+                        {
+                            type: typefilter,
+                            moyen: moyenfilter,
+                            typeDechet: typeDechetfilter
+                        }
+                , function (data, status) {
+                    $('#stats-table').empty();
+                    //alert(JSON.stringify(data));
+                    for (var i = 0; i < data.length; i++) {
+                        if (typefilter == 'journalier')
+                            populateForJournalier(data[i]);
+                        else
+                            populateForMois(data[i]);
+
+                    }
+
+                });
+            }
+
+        });
+    </script>
+
+{% endblock %}
+

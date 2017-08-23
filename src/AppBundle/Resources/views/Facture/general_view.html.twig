@@ -1,0 +1,82 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}AppBundle:Facture:general{% endblock %}
+{% block body %}
+    <div class="container">
+        {% if factures %}
+            <table class="table">
+                <tr>
+                    <th>numéro</th>
+                    <th>date facture</th>
+                    <th>montant</th>
+                    <th>statut</th>
+                    <th>echeance</th>
+                    <th>details</th>
+                </tr>
+                {% for facture in factures %}
+                    <tr>
+                        <td>{{facture.id}}</td>
+                        <td>{{facture.datefacture|date("d/m/Y")}}</td>
+                        <td>{{facture.montant}}&#8364</td>
+                        <td>
+                            {% if facture.statut == 0 and facture.montant != 0 %}
+                                non payé
+                            {% else %}
+                                payé
+                            {% endif %}
+                        </td>
+                        <td>{{facture.echeance|date("d/m/Y")}}</td>
+                        <td><a href="#" onclick="getDetails({{facture.id}})">Voir les détails</a></td>
+                    </tr>
+
+                {% endfor %}
+            </table>
+        {% endif %}
+
+        <div id="collapsableContent" class="collapse">
+            <div id="collapse-content">
+                
+            </div>
+             <button id="close" type="button" class="btn btn-default">fermer</button>
+        </div>
+       
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{parent() }}
+    <script>
+        $(function () {
+            $('#close').click(function () {
+                 $('.collapse').collapse('hide');
+            });
+        });
+
+        function getDetails(id)
+        {
+            $('#collapse-content').empty();
+            var url = '{{ path('facture_show_details', {'id': '0'}) }}';
+            url = url.replace('0', id);
+            $.ajax({url: url, success: function (result) {
+                    $('#collapse-content').append("<table class='table-condensed'>");
+                    $('#collapse-content').append("<tr>");
+                    $('#collapse-content').append("<th>dechets</th>");
+                    $('#collapse-content').append("<th>quantité</th>");
+                    $('#collapse-content').append("<th>montant</th>");
+                    $('#collapse-content').append("</tr>")
+                    for (var i = 0; i < result.length; i++) {
+                        $('#collapse-content').append("<tr>");
+                        $('#collapse-content').append("<td>" + result[i].dechet.nom + "</td>");
+                        $('#collapse-content').append("<td>" + result[i].quantite + "m³</td>");
+                        $('#collapse-content').append("<td>" + result[i].montant + "</td>");
+                        $('#collapse-content').append("</tr>")
+                    }
+                    $('#collapse-content').append("</table>");
+                    $('.collapse').collapse();
+                }});
+        }
+
+    </script>
+
+
+{% endblock %}

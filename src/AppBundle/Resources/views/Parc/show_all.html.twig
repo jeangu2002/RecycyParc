@@ -1,0 +1,46 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}AppBundle:Parc:showAll{% endblock %}
+
+{% block body %}
+    <div class="container">
+    <p><a href={{path("parc_create")}}>Ajouter un parc</a></p>   
+    <h1>Liste de parcs</h1>
+    {% if(parcs)  %}
+           <div class="table-responsive">
+                <table id="menage-table"  class="table table-bordred table-striped">
+                    <thead>
+                        <th>rue</th>
+                        <th>localite</th>
+                        <th>téléphone</th>
+                    </thead>
+                    <tbody>
+                        
+                {% for parc in parcs %}
+                    <tr>
+                        <td>{{parc.rue}} {{parc.numero}}</td>
+                        <td>{{parc.codePostal}} {{parc.localite}}</td>
+                        <td>{{parc.telephone}}</td>
+                        <td>
+                            <p data-placement="top" data-toggle="tooltip" title="Modifier">
+                                <a class="btn btn-primary btn-xs" href="{{path('parc_edit',{'id':parc.id})}}"  >
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                </a>
+                            </p>
+                        </td>
+                        <td>
+                            <p data-placement="top" data-toggle="tooltip" title="Supprimer">
+                                <button class="btn btn-danger btn-xs" data-title="delete" data-toggle="modal" data-target="#delete" >
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </button>
+                            </p>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                </table>
+                                 
+           </div>
+    </div>
+       {% endif %}
+{% endblock %}

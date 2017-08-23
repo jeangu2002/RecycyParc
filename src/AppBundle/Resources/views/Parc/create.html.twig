@@ -1,0 +1,47 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}AppBundle:Parc:create{% endblock %}
+
+{% block body %}
+<h1>Ajouter un parc</h1>
+
+<div class="container">
+        
+        <div class="row">
+            {{ form_start(form, {'attr': {'class': 'my-form-class'} }) }}
+            {{ form_row(form._token) }}
+            <div class="col-md-6">
+                 <div class="form-group">
+                    {{ form_label(form.rue)}}
+                    {{ form_widget(form.rue, {'attr': {'class': 'form-control'}})}}
+                    {{ form_errors(form.rue) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.numero)}}
+                    {{ form_widget(form.numero, {'attr': {'class': 'form-control'}})}}
+                    {{ form_errors(form.numero) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.codePostal)}}
+                    {{ form_widget(form.codePostal, {'attr': {'class': 'form-control'}})}}
+                    {{ form_errors(form.codePostal) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.localite)}}
+                    {{ form_widget(form.localite, {'attr': {'class': 'form-control'}})}}
+                    {{ form_errors(form.localite) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.telephone)}}
+                    {{ form_widget(form.telephone, {'attr': {'class': 'form-control'}})}}
+                    {{ form_errors(form.telephone) }}
+                </div>
+               
+                <input type="submit" value="Ajouter" class="btn btn-success pull-right" />
+            </div>
+            {{ form_end(form,{'render_rest': false}) }}
+        </div>
+           
+    </div>
+
+{% endblock %}
